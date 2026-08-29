@@ -1,5 +1,12 @@
 use calculator::*;
 
+fn run() -> anyhow::Result<()> {
+    
+    Ok(())
+}
+
 fn main() {
-    println!("Hello, world!");
+    if let Err(e) = run() {
+        eprintln!("{:?}", e);
+    }
 }
