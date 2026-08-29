@@ -34,3 +34,21 @@ fn check_brackets(toks: &Vec<Token>) -> Result<(), Error> {
     if count == 0 { Ok(()) }
     else { Err(Error::NotAllBracketsWasClosed) }
 }
+
+#[derive(Debug)]
+pub enum Element {
+    Token(Token),
+    Target(Box<Target>)
+}
+
+#[derive(Debug)]
+pub struct Target {
+    elements: Vec<Element>,
+    level: u8
+}
+
+pub fn get_targets(toks: &Vec<Token>) -> Result<(/* Top Target of the tree*/), Error> {
+
+    Ok(())
+}
+
