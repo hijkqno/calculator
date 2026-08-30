@@ -11,13 +11,13 @@ pub enum Error {
 
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Operator {
     Add, Sub,
     Mul, Div
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Token {
     Number(i64),
     Operator(Operator),
