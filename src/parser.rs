@@ -75,19 +75,11 @@ fn parse_expression(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Expr {
     output
 }
 
-fn parse_root_expression(toks: &Vec<Token>) -> Expr {
-    let mut tokens: Peekable<Iter<'_, Token>> = toks.iter().peekable();
-
-    let root: Expr = parse_expression(0, &mut tokens);
-
-    root
-}
-
 pub fn get_root_expression(toks: &Vec<Token>) -> Result<Expr, Error> {
     check_parentheses(toks)?;
 
-    let root: Expr = parse_root_expression(toks);
+    let mut iter: Peekable<Iter<'_, Token>> = toks.iter().peekable();
+    let root_expression: Expr = parse_expression(0, &mut iter);
 
-    Ok(root)
+    Ok(root_expression)
 }
-
