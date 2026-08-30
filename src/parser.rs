@@ -35,13 +35,13 @@ fn check_brackets(toks: &Vec<Token>) -> Result<(), Error> {
     else { Err(Error::NotAllBracketsWasClosed) }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Element {
     Token(Token),
     Target(Box<Target>)
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Target {
     elements: Vec<Element>,
     level: u8
