@@ -7,7 +7,7 @@ pub enum Error {
     #[error("Parentheses counter limit exceeded")]
     ParenthesesCounterLimitExceeded,
 
-    #[error("Invalid closing paranthesis")]
+    #[error("Unexpected closing paranthesis")]
     UnexpectedClosingParanthesis,
 
     #[error("Not all parentheses were closed")]
