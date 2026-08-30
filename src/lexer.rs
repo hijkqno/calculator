@@ -3,11 +3,11 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {
-    #[error("Invalid character {0}")]
+    #[error("Invalid character \'{0}\'")]
     InvalidChar(char),
 
     #[error("Failed to parse number: {0}")]
-    NumberParseError(ParseIntError)
+    NumberParse(ParseIntError),
 
 }
 
@@ -21,8 +21,8 @@ pub enum Operator {
 pub enum Token {
     Number(i64),
     Operator(Operator),
-    LeftBracket,
-    RightBracket
+    LParen,
+    RParen
 }
 
 pub fn get_tokens(str: &str) -> Result<Vec<Token>, Error> {
@@ -41,7 +41,7 @@ pub fn get_tokens(str: &str) -> Result<Vec<Token>, Error> {
 
             let num: i64 = numchrs
                 .parse()
-                .map_err(|e| Error::NumberParseError(e))?;
+                .map_err(|e| Error::NumberParse(e))?;
             output.push(Token::Number(num));
             continue;
         }
@@ -54,8 +54,8 @@ pub fn get_tokens(str: &str) -> Result<Vec<Token>, Error> {
             '*' => output.push(Token::Operator(Operator::Mul)),
             '/' => output.push(Token::Operator(Operator::Div)),
 
-            '(' => output.push(Token::LeftBracket),
-            ')' => output.push(Token::RightBracket),
+            '(' => output.push(Token::LParen),
+            ')' => output.push(Token::RParen),
         
             other => {
                 return Err(Error::InvalidChar(other));
