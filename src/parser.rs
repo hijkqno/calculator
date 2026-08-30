@@ -44,8 +44,8 @@ pub enum Element {
 
 #[derive(Debug, Clone)]
 pub struct Target {
-    elements: Vec<Element>,
-    level: u8
+    pub elements: Vec<Element>,
+    pub level: u8
 }
 
 fn parse_target(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Target {
