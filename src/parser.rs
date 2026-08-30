@@ -1,3 +1,4 @@
+use std::{iter::Peekable, slice::Iter};
 use thiserror::Error;
 use crate::lexer::Token;
 
@@ -47,8 +48,46 @@ pub struct Target {
     level: u8
 }
 
-pub fn get_targets(toks: &Vec<Token>) -> Result<(/* Top Target of the tree*/), Error> {
+fn parse_target(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Target {
+    let mut output: Target = Target {
+        elements: Vec::new(),
+        level: level
+    };
 
-    Ok(())
+    while let Some(&tk) = toks.peek() {
+        match tk {
+            Token::LeftBracket => {
+                let _ = toks.next();
+                let new_target: Target = parse_target(level + 1, toks);
+                output.elements.push(Element::Target(Box::new(new_target)));
+            },
+            Token::RightBracket => {
+                toks.next();
+                return output;
+            },
+            other => {
+                output.elements.push(Element::Token(*other));
+                toks.next();
+            }
+        }
+    }
+
+    output
+}
+
+fn parse_root_target(toks: &Vec<Token>) -> Target {
+    let mut tokens: Peekable<Iter<'_, Token>> = toks.iter().peekable();
+
+    let root: Target = parse_target(0, &mut tokens);
+
+    root
+}
+
+pub fn get_target(toks: &Vec<Token>) -> Result<Target, Error> {
+    check_brackets(toks)?;
+
+    let root: Target = parse_root_target(toks);
+
+    Ok(root)
 }
 
