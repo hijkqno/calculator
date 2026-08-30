@@ -37,20 +37,20 @@ fn check_parentheses(toks: &Vec<Token>) -> Result<(), Error> {
 }
 
 #[derive(Debug, Clone)]
-pub enum Element {
+pub enum ExprItem {
     Token(Token),
-    Target(Box<Target>)
+    SubExpr(Box<Expr>)
 }
 
 #[derive(Debug, Clone)]
-pub struct Target {
-    pub elements: Vec<Element>,
+pub struct Expr {
+    pub items: Vec<ExprItem>,
     pub level: u8
 }
 
-fn parse_target(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Target {
-    let mut output: Target = Target {
-        elements: Vec::new(),
+fn parse_expression(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Expr {
+    let mut output: Expr = Expr {
+        items: Vec::new(),
         level: level
     };
 
@@ -58,15 +58,15 @@ fn parse_target(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Target {
         match tk {
             Token::LParen => {
                 let _ = toks.next();
-                let new_target: Target = parse_target(level + 1, toks);
-                output.elements.push(Element::Target(Box::new(new_target)));
+                let new_target: Expr = parse_expression(level + 1, toks);
+                output.items.push(ExprItem::SubExpr(Box::new(new_target)));
             },
             Token::RParen => {
                 toks.next();
                 return output;
             },
             other => {
-                output.elements.push(Element::Token(*other));
+                output.items.push(ExprItem::Token(*other));
                 toks.next();
             }
         }
@@ -75,18 +75,18 @@ fn parse_target(level: u8, toks: &mut Peekable<Iter<'_, Token>>) -> Target {
     output
 }
 
-fn parse_root_target(toks: &Vec<Token>) -> Target {
+fn parse_root_expression(toks: &Vec<Token>) -> Expr {
     let mut tokens: Peekable<Iter<'_, Token>> = toks.iter().peekable();
 
-    let root: Target = parse_target(0, &mut tokens);
+    let root: Expr = parse_expression(0, &mut tokens);
 
     root
 }
 
-pub fn get_target(toks: &Vec<Token>) -> Result<Target, Error> {
+pub fn get_root_expression(toks: &Vec<Token>) -> Result<Expr, Error> {
     check_parentheses(toks)?;
 
-    let root: Target = parse_root_target(toks);
+    let root: Expr = parse_root_expression(toks);
 
     Ok(root)
 }
