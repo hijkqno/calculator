@@ -3,6 +3,7 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(version)]
 pub struct Arguments {
+    #[arg(allow_hyphen_values = true)]
     string: String,
 }
 
