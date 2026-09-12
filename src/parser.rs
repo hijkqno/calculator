@@ -1,8 +1,7 @@
 use std::{iter::Peekable, slice::Iter};
-use thiserror::Error;
 use crate::lexer::{Token, Operator};
 
-#[derive(Error, Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("Parentheses counter limit exceeded")]
     ParenthesesCounterLimitExceeded,

@@ -1,10 +1,9 @@
-use thiserror::Error;
 use crate::{
     parser::{Expr, ExprItem},
     lexer::{Token, Operator}
 };
 
-#[derive(Error, Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("Div zero")]
     DivZero

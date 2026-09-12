@@ -1,7 +1,6 @@
 use std::num::ParseIntError;
-use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error("Invalid character \'{0}\'")]
     InvalidChar(char),
